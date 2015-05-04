@@ -542,9 +542,14 @@ class OC {
 		\OC::$server->getEventLogger()->log('autoloader', 'Autoloader', $loaderStart, $loaderEnd);
 		\OC::$server->getEventLogger()->start('boot', 'Initialize');
 
-		// set some stuff
-		//ob_start();
-		error_reporting(E_ALL | E_STRICT);
+		/**
+		 * Set error reporting and debug level
+		 * FIXME: E^DEPRECATED is exluded here due to a behavioural change in
+		 *        PHP 5.6 which will result in valid requests throwing deprecation
+		 *        notices. Remove this hack once PHP 5.6 support is phased out.
+		 * @link https://github.com/owncloud/core/issues/16014
+		 */
+		error_reporting(E_ALL ^ E_DEPRECATED | E_STRICT);
 		if (defined('DEBUG') && DEBUG) {
 			ini_set('display_errors', 1);
 		}
